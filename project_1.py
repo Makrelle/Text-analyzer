@@ -1,4 +1,5 @@
 # my first project - text analyzer
+
 '''
 author =
 '''
@@ -29,19 +30,19 @@ are found in multiple limestone layers, which lie some
 represent several varieties of perch, as well as 
 other freshwater genera and herring similar to those 
 in modern oceans. Other fish such as paddlefish, 
-garpike and stingray are also present.'''
-]
-ODDELOVAC = "-" * 40
-print(ODDELOVAC)
+garpike and stingray are also present.''']
 
-# 1. intro
+SEPARATOR = "-" * 40
+print(SEPARATOR)
+
+# intro
 print("Welcome to the app. Please log in: ")
 
-# 2. entering username and password
+# enter username and password
 username = input("USERNAME: ")
 password = input("PASSWORD: ")
 
-# 3. checking username and password
+# check username and password
 users_and_passwords = {
     "bob": "123",
     "ann": "pass123",
@@ -50,15 +51,14 @@ users_and_passwords = {
 }
 
 while username not in users_and_passwords\
-        or password not in users_and_passwords.values()\
         or password != users_and_passwords[username]:
     print("Wrong username or password. Try again: ")
     username = input("USERNAME: ")
     password = input("PASSWORD: ")
 
-print(ODDELOVAC)
+print(SEPARATOR)
 
-# 4. selecting text
+# select text
 print("We have 3 texts to be analyzed.")
 text_number = input("Enter a number btw. 1 and 3 to select: ")
 
@@ -67,71 +67,51 @@ while not text_number.isnumeric()\
         or int(text_number) > 3:
     print("Wrong input")
     text_number = input("Enter a number btw. 1 and 3 to select: ")
-print(ODDELOVAC)
+
+print(SEPARATOR)
 
 text = TEXTS[int(text_number) - 1]
 
-# 5. statistics
+# statistics
 words = text.split()
-
-# number of words in total
 total_words = len(words)
-print(f"There are {total_words} words in the selected text.")
-
-# number of words starting with capital letter
 title_count = 0
+upper_count = 0
+lower_count = 0
+numeric_words = []
+clean_words = []
+frequency = dict()
+
 for word in words:
     if word.istitle():
         title_count += 1
-
-print(f"There are {title_count} titlecase words.")
-
-# number of uppercase words
-upper_count = 0
-for word in words:
     if word.isupper():
         upper_count += 1
-print(f"There are {upper_count} uppercase words.")
-
-# number of lowercase words
-lower_count = 0
-for word in words:
     if word.islower():
-        lower_count += + 1
-print(f"There are {lower_count} lowercase words.")
-
-# number of numeric-only words (e.g. 100, not 100N)
-numeric_count = 0
-for word in words:
+        lower_count += 1
     if word.isnumeric():
-        numeric_count += 1
-print(f"There are {numeric_count} numeric strings.")
-print(ODDELOVAC)
-
-# 6. bar chart of frequencies of word lengths
-clean_words = []
-for word in words:
+        numeric_words.append(float(word))
     clean_word = word.strip(",.:'")
-    clean_words.append(clean_word)
-
-frequency = dict()
-while clean_words:
-    clean_word = clean_words.pop(0)
     if len(clean_word) not in frequency:
-        frequency[len(clean_word)] = [clean_word]
+        frequency[len(clean_word)] = 1
     else:
-        frequency[len(clean_word)].append(clean_word)
+        frequency[len(clean_word)] += 1
 
+print(f"""There are {total_words} words in the selected text.
+There are {title_count} titlecase words.
+There are {upper_count} uppercase words.
+There are {lower_count} lowercase words.
+There are {len(numeric_words)} numeric strings.""")
+
+print(SEPARATOR)
+
+# bar chart of frequencies of word lengths
 words_lengths = sorted(frequency.keys())
-
 for number in words_lengths:
-    print(number, "*" * len(frequency[number]), len(frequency[number]))
+    print(number, "*" * frequency[number], frequency[number])
 
-# 7. sum of all numeric "words"
-sum_of_num = 0
-for word in words:
-    if word.isnumeric():
-        sum_of_num += int(word)
-print(ODDELOVAC)
-print(f"If we summed all the numbers in this text we would get: {float(sum_of_num)}")
-print(ODDELOVAC)
+print(SEPARATOR)
+print(f"""If we summed all the numbers in this text
+we would get: {float(sum(numeric_words))}""")
+print(SEPARATOR)
+
